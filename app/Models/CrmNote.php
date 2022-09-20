@@ -35,6 +35,12 @@ class CrmNote extends Model implements HasMedia
         'team_id',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+        CrmNote::observe(new \App\Observers\CrmNoteActionObserver());
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')->fit('crop', 50, 50);

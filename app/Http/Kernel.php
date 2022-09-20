@@ -27,6 +27,7 @@ class Kernel extends HttpKernel
         'throttle'         => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified'         => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin'            => \App\Http\Middleware\IsAdmin::class,
+        '2fa'              => \App\Http\Middleware\TwoFactorMiddleware::class,
     ];
 
     protected $middlewareGroups = [
@@ -43,6 +44,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\ApprovalMiddleware::class,
         ],
         'api' => [
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\AuthGates::class,

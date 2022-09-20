@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use \DateTimeInterface;
-use App\Traits\MultiTenantModelTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Client extends Model
 {
     use SoftDeletes;
-    use MultiTenantModelTrait;
     use HasFactory;
 
     public $table = 'clients';
@@ -23,21 +21,23 @@ class Client extends Model
     ];
 
     protected $fillable = [
-        'name',
-        'surname',
-        'email',
-        'adress',
-        'phone_number',
-        'created_at',
+        'first_name',
+        'last_name',
         'company',
+        'email',
+        'phone',
+        'website',
+        'skype',
+        'country',
+        'status_id',
+        'created_at',
         'updated_at',
         'deleted_at',
-        'team_id',
     ];
 
-    public function team()
+    public function status()
     {
-        return $this->belongsTo(Team::class, 'team_id');
+        return $this->belongsTo(ClientStatus::class, 'status_id');
     }
 
     protected function serializeDate(DateTimeInterface $date)

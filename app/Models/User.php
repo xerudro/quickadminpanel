@@ -23,7 +23,7 @@ class User extends Authenticatable
     public $table = 'users';
 
     protected $hidden = [
-        'remember_token',
+        'remember_token', 'two_factor_code',
         'password',
     ];
 
@@ -32,13 +32,16 @@ class User extends Authenticatable
         'created_at',
         'updated_at',
         'deleted_at',
+        'two_factor_expires_at',
     ];
 
     protected $fillable = [
         'name',
         'adress',
         'phone_number',
+        'two_factor',
         'email',
+        'two_factor_code',
         'email_verified_at',
         'password',
         'approved',
@@ -47,6 +50,7 @@ class User extends Authenticatable
         'updated_at',
         'deleted_at',
         'team_id',
+        'two_factor_expires_at',
     ];
 
     public function __construct(array $attributes = [])
@@ -60,9 +64,36 @@ class User extends Authenticatable
         });
     }
 
+    public function generateTwoFactorCode()
+    {
+        $this->timestamps            = false;
+        $this->two_factor_code       = rand(100000, 999999);
+        $this->two_factor_expires_at = now()->addMinutes(15)->format(config('panel.date_format') . ' ' . config('panel.time_format'));
+        $this->save();
+    }
+
+    public function resetTwoFactorCode()
+    {
+        $this->timestamps            = false;
+        $this->two_factor_code       = null;
+        $this->two_factor_expires_at = null;
+        $this->save();
+    }
+
     public function getIsAdminAttribute()
     {
         return $this->roles()->where('id', 1)->exists();
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+        User::observe(new \App\Observers\UserActionObserver());
+    }
+
+    public function userUserAlerts()
+    {
+        return $this->belongsToMany(UserAlert::class);
     }
 
     public function getEmailVerifiedAtAttribute($value)
@@ -95,6 +126,16 @@ class User extends Authenticatable
     public function team()
     {
         return $this->belongsTo(Team::class, 'team_id');
+    }
+
+    public function getTwoFactorExpiresAtAttribute($value)
+    {
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
+    }
+
+    public function setTwoFactorExpiresAtAttribute($value)
+    {
+        $this->attributes['two_factor_expires_at'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
     }
 
     protected function serializeDate(DateTimeInterface $date)

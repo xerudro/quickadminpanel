@@ -28,6 +28,12 @@ class Team extends Model
         'owner_id',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+        Team::observe(new \App\Observers\TeamActionObserver());
+    }
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');

@@ -25,18 +25,26 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.client.fields.name') }}
+                            {{ trans('cruds.client.fields.first_name') }}
                         </th>
                         <td>
-                            {{ $client->name }}
+                            {{ $client->first_name }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.client.fields.surname') }}
+                            {{ trans('cruds.client.fields.last_name') }}
                         </th>
                         <td>
-                            {{ $client->surname }}
+                            {{ $client->last_name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.client.fields.company') }}
+                        </th>
+                        <td>
+                            {{ $client->company }}
                         </td>
                     </tr>
                     <tr>
@@ -49,26 +57,42 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.client.fields.adress') }}
+                            {{ trans('cruds.client.fields.phone') }}
                         </th>
                         <td>
-                            {{ $client->adress }}
+                            {{ $client->phone }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.client.fields.phone_number') }}
+                            {{ trans('cruds.client.fields.website') }}
                         </th>
                         <td>
-                            {{ $client->phone_number }}
+                            {{ $client->website }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.client.fields.company') }}
+                            {{ trans('cruds.client.fields.skype') }}
                         </th>
                         <td>
-                            {{ $client->company }}
+                            {{ $client->skype }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.client.fields.country') }}
+                        </th>
+                        <td>
+                            {{ $client->country }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.client.fields.status') }}
+                        </th>
+                        <td>
+                            {{ $client->status->name ?? '' }}
                         </td>
                     </tr>
                 </tbody>

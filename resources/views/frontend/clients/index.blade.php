@@ -26,53 +26,35 @@
                                         {{ trans('cruds.client.fields.id') }}
                                     </th>
                                     <th>
-                                        {{ trans('cruds.client.fields.name') }}
+                                        {{ trans('cruds.client.fields.first_name') }}
                                     </th>
                                     <th>
-                                        {{ trans('cruds.client.fields.surname') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.client.fields.email') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.client.fields.adress') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.client.fields.phone_number') }}
+                                        {{ trans('cruds.client.fields.last_name') }}
                                     </th>
                                     <th>
                                         {{ trans('cruds.client.fields.company') }}
                                     </th>
                                     <th>
+                                        {{ trans('cruds.client.fields.email') }}
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.client.fields.phone') }}
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.client.fields.website') }}
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.client.fields.skype') }}
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.client.fields.country') }}
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.client.fields.status') }}
+                                    </th>
+                                    <th>
                                         &nbsp;
                                     </th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                    </td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,22 +64,31 @@
                                             {{ $client->id ?? '' }}
                                         </td>
                                         <td>
-                                            {{ $client->name ?? '' }}
+                                            {{ $client->first_name ?? '' }}
                                         </td>
                                         <td>
-                                            {{ $client->surname ?? '' }}
+                                            {{ $client->last_name ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $client->company ?? '' }}
                                         </td>
                                         <td>
                                             {{ $client->email ?? '' }}
                                         </td>
                                         <td>
-                                            {{ $client->adress ?? '' }}
+                                            {{ $client->phone ?? '' }}
                                         </td>
                                         <td>
-                                            {{ $client->phone_number ?? '' }}
+                                            {{ $client->website ?? '' }}
                                         </td>
                                         <td>
-                                            {{ $client->company ?? '' }}
+                                            {{ $client->skype ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $client->country ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $client->status->name ?? '' }}
                                         </td>
                                         <td>
                                             @can('client_show')
@@ -180,27 +171,6 @@
           .columns.adjust();
   });
   
-let visibleColumnsIndexes = null;
-$('.datatable thead').on('input', '.search', function () {
-      let strict = $(this).attr('strict') || false
-      let value = strict && this.value ? "^" + this.value + "$" : this.value
-
-      let index = $(this).parent().index()
-      if (visibleColumnsIndexes !== null) {
-        index = visibleColumnsIndexes[index]
-      }
-
-      table
-        .column(index)
-        .search(value, strict)
-        .draw()
-  });
-table.on('column-visibility.dt', function(e, settings, column, state) {
-      visibleColumnsIndexes = []
-      table.columns(":visible").every(function(colIdx) {
-          visibleColumnsIndexes.push(colIdx);
-      });
-  })
 })
 
 </script>

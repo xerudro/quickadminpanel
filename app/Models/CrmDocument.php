@@ -40,6 +40,12 @@ class CrmDocument extends Model implements HasMedia
         'team_id',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+        CrmDocument::observe(new \App\Observers\CrmDocumentActionObserver());
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')->fit('crop', 50, 50);

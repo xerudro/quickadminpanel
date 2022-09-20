@@ -40,9 +40,54 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Teams Permisions
     Route::apiResource('teams-permisions', 'TeamsPermisionsApiController');
 
-    // Clients
-    Route::apiResource('clients', 'ClientsApiController');
-
     // Companies
     Route::apiResource('companies', 'CompaniesApiController');
+
+    // User Alerts
+    Route::apiResource('user-alerts', 'UserAlertsApiController');
+
+    // Assets History
+    Route::apiResource('assets-histories', 'AssetsHistoryApiController', ['except' => ['store', 'show', 'update', 'destroy']]);
+
+    // Expense Category
+    Route::apiResource('expense-categories', 'ExpenseCategoryApiController');
+
+    // Income Category
+    Route::apiResource('income-categories', 'IncomeCategoryApiController');
+
+    // Expense
+    Route::apiResource('expenses', 'ExpenseApiController');
+
+    // Income
+    Route::apiResource('incomes', 'IncomeApiController');
+
+    // Time Work Type
+    Route::apiResource('time-work-types', 'TimeWorkTypeApiController');
+
+    // Courses
+    Route::post('courses/media', 'CoursesApiController@storeMedia')->name('courses.storeMedia');
+    Route::apiResource('courses', 'CoursesApiController');
+
+    // Lessons
+    Route::post('lessons/media', 'LessonsApiController@storeMedia')->name('lessons.storeMedia');
+    Route::apiResource('lessons', 'LessonsApiController');
+
+    // Tests
+    Route::apiResource('tests', 'TestsApiController');
+
+    // Questions
+    Route::post('questions/media', 'QuestionsApiController@storeMedia')->name('questions.storeMedia');
+    Route::apiResource('questions', 'QuestionsApiController');
+
+    // Question Options
+    Route::apiResource('question-options', 'QuestionOptionsApiController');
+
+    // Test Results
+    Route::apiResource('test-results', 'TestResultsApiController');
+
+    // Test Answers
+    Route::apiResource('test-answers', 'TestAnswersApiController');
+
+    // Client Transactions
+    Route::apiResource('client-transactions', 'ClientTransactionsApiController');
 });
