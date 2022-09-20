@@ -8,6 +8,7 @@ use App\Http\Requests\MassDestroyProductCategoryRequest;
 use App\Http\Requests\StoreProductCategoryRequest;
 use App\Http\Requests\UpdateProductCategoryRequest;
 use App\Models\ProductCategory;
+use App\Models\Team;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -23,7 +24,7 @@ class ProductCategoryController extends Controller
         abort_if(Gate::denies('product_category_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = ProductCategory::query()->select(sprintf('%s.*', (new ProductCategory())->table));
+            $query = ProductCategory::with(['team'])->select(sprintf('%s.*', (new ProductCategory())->table));
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -70,7 +71,9 @@ class ProductCategoryController extends Controller
             return $table->make(true);
         }
 
-        return view('admin.productCategories.index');
+        $teams = Team::get();
+
+        return view('admin.productCategories.index', compact('teams'));
     }
 
     public function create()
@@ -99,6 +102,8 @@ class ProductCategoryController extends Controller
     {
         abort_if(Gate::denies('product_category_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $productCategory->load('team');
+
         return view('admin.productCategories.edit', compact('productCategory'));
     }
 
@@ -123,6 +128,8 @@ class ProductCategoryController extends Controller
     public function show(ProductCategory $productCategory)
     {
         abort_if(Gate::denies('product_category_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $productCategory->load('team');
 
         return view('admin.productCategories.show', compact('productCategory'));
     }

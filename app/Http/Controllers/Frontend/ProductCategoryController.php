@@ -8,6 +8,7 @@ use App\Http\Requests\MassDestroyProductCategoryRequest;
 use App\Http\Requests\StoreProductCategoryRequest;
 use App\Http\Requests\UpdateProductCategoryRequest;
 use App\Models\ProductCategory;
+use App\Models\Team;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -21,9 +22,11 @@ class ProductCategoryController extends Controller
     {
         abort_if(Gate::denies('product_category_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $productCategories = ProductCategory::with(['media'])->get();
+        $productCategories = ProductCategory::with(['team', 'media'])->get();
 
-        return view('frontend.productCategories.index', compact('productCategories'));
+        $teams = Team::get();
+
+        return view('frontend.productCategories.index', compact('productCategories', 'teams'));
     }
 
     public function create()
@@ -52,6 +55,8 @@ class ProductCategoryController extends Controller
     {
         abort_if(Gate::denies('product_category_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $productCategory->load('team');
+
         return view('frontend.productCategories.edit', compact('productCategory'));
     }
 
@@ -76,6 +81,8 @@ class ProductCategoryController extends Controller
     public function show(ProductCategory $productCategory)
     {
         abort_if(Gate::denies('product_category_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $productCategory->load('team');
 
         return view('frontend.productCategories.show', compact('productCategory'));
     }

@@ -27,6 +27,12 @@ class Permission extends Model
         'deleted_at',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+        Permission::observe(new \App\Observers\PermissionActionObserver());
+    }
+
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');

@@ -35,6 +35,9 @@
                                         {{ trans('cruds.user.fields.phone_number') }}
                                     </th>
                                     <th>
+                                        {{ trans('cruds.user.fields.two_factor') }}
+                                    </th>
+                                    <th>
                                         {{ trans('cruds.user.fields.email') }}
                                     </th>
                                     <th>
@@ -64,6 +67,8 @@
                                     </td>
                                     <td>
                                         <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                                    </td>
+                                    <td>
                                     </td>
                                     <td>
                                         <input class="search" type="text" placeholder="{{ trans('global.search') }}">
@@ -99,6 +104,10 @@
                                         </td>
                                         <td>
                                             {{ $user->phone_number ?? '' }}
+                                        </td>
+                                        <td>
+                                            <span style="display:none">{{ $user->two_factor ?? '' }}</span>
+                                            <input type="checkbox" disabled="disabled" {{ $user->two_factor ? 'checked' : '' }}>
                                         </td>
                                         <td>
                                             {{ $user->email ?? '' }}

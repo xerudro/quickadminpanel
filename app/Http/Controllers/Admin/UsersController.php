@@ -54,6 +54,9 @@ class UsersController extends Controller
             $table->editColumn('phone_number', function ($row) {
                 return $row->phone_number ? $row->phone_number : '';
             });
+            $table->editColumn('two_factor', function ($row) {
+                return '<input type="checkbox" disabled ' . ($row->two_factor ? 'checked' : null) . '>';
+            });
             $table->editColumn('email', function ($row) {
                 return $row->email ? $row->email : '';
             });
@@ -70,7 +73,7 @@ class UsersController extends Controller
                 return implode(' ', $labels);
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'approved', 'roles']);
+            $table->rawColumns(['actions', 'placeholder', 'two_factor', 'approved', 'roles']);
 
             return $table->make(true);
         }
@@ -125,7 +128,7 @@ class UsersController extends Controller
     {
         abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $user->load('roles', 'team');
+        $user->load('roles', 'team', 'userUserAlerts');
 
         return view('admin.users.show', compact('user'));
     }

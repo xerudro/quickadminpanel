@@ -48,6 +48,36 @@
                     </li>
                 </ul>
             @endif
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown notifications-menu">
+                    <a href="#" class="nav-link" data-toggle="dropdown">
+                        <i class="far fa-bell"></i>
+                        @php($alertsCount = \Auth::user()->userUserAlerts()->where('read', false)->count())
+                            @if($alertsCount > 0)
+                                <span class="badge badge-warning navbar-badge">
+                                    {{ $alertsCount }}
+                                </span>
+                            @endif
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        @if(count($alerts = \Auth::user()->userUserAlerts()->withPivot('read')->limit(10)->orderBy('created_at', 'ASC')->get()->reverse()) > 0)
+                            @foreach($alerts as $alert)
+                                <div class="dropdown-item">
+                                    <a href="{{ $alert->alert_link ? $alert->alert_link : "#" }}" target="_blank" rel="noopener noreferrer">
+                                        @if($alert->pivot->read === 0) <strong> @endif
+                                            {{ $alert->alert_text }}
+                                            @if($alert->pivot->read === 0) </strong> @endif
+                                    </a>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="text-center">
+                                {{ trans('global.no_alerts') }}
+                            </div>
+                        @endif
+                    </div>
+                </li>
+            </ul>
 
         </nav>
 
@@ -118,7 +148,55 @@
   let selectNoneButtonTrans = '{{ trans('global.deselect_all') }}'
 
   let languages = {
-    'en': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json'
+    'en': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json',
+        'de': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/German.json',
+        'ru': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Russian.json',
+        'fr': 'https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json',
+        'es': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json',
+        'pt-br': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json',
+        'tr': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Turkish.json',
+        'ua': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Ukrainian.json',
+        'ca': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json',
+        'it': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Italian.json',
+        'ar': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Arabic.json',
+        'pl': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Polish.json',
+        'ro': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Romanian.json',
+        'pt': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese.json',
+        'cs': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Czech.json',
+        'sk': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Slovak.json',
+        'cnr': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json',
+        'sr': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Serbian.json',
+        'ms': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Malay.json',
+        'lt': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Lithuanian.json',
+        'id': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Indonesian.json',
+        'nl': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Dutch.json',
+        'hu': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Hungarian.json',
+        'bn': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Bangla.json',
+        'dk': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Danish.json',
+        'zh': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Chinese-traditional.json',
+        'af': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Afrikaans.json',
+        'zh-Hans': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Chinese.json',
+        'th': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Thai.json',
+        'se': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json',
+        'no': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Norwegian-Bokmal.json',
+        'bg': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Bulgarian.json',
+        'el': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Greek.json',
+        'vi': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json',
+        'gu': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Gujarati.json',
+        'mn': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Mongolian.json',
+        'fa': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Persian.json',
+        'ee': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Estonian.json',
+        'hi': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Hindi.json',
+        'am': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Armenian.json',
+        'by': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Belarusian.json',
+        'sl': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Slovenian.json',
+        'al': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Albanian.json',
+        'ps': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Pashto.json',
+        'lv': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Latvian.json',
+        'fi': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Finnish.json',
+        'he': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Hebrew.json',
+        'si': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Sinhala.json',
+        'ta': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Tamil.json'
   };
 
   $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, { className: 'btn' })
@@ -217,6 +295,87 @@
   });
 
   $.fn.dataTable.ext.classes.sPageButton = '';
+});
+
+    </script>
+    <script>
+        $(document).ready(function () {
+    $(".notifications-menu").on('click', function () {
+        if (!$(this).hasClass('open')) {
+            $('.notifications-menu .label-warning').hide();
+            $.get('/admin/user-alerts/read');
+        }
+    });
+});
+
+    </script>
+    <script>
+        $(document).ready(function() {
+    $('.searchable-field').select2({
+        minimumInputLength: 3,
+        ajax: {
+            url: '{{ route("admin.globalSearch") }}',
+            dataType: 'json',
+            type: 'GET',
+            delay: 200,
+            data: function (term) {
+                return {
+                    search: term
+                };
+            },
+            results: function (data) {
+                return {
+                    data
+                };
+            }
+        },
+        escapeMarkup: function (markup) { return markup; },
+        templateResult: formatItem,
+        templateSelection: formatItemSelection,
+        placeholder : '{{ trans('global.search') }}...',
+        language: {
+            inputTooShort: function(args) {
+                var remainingChars = args.minimum - args.input.length;
+                var translation = '{{ trans('global.search_input_too_short') }}';
+
+                return translation.replace(':count', remainingChars);
+            },
+            errorLoading: function() {
+                return '{{ trans('global.results_could_not_be_loaded') }}';
+            },
+            searching: function() {
+                return '{{ trans('global.searching') }}';
+            },
+            noResults: function() {
+                return '{{ trans('global.no_results') }}';
+            },
+        }
+
+    });
+    function formatItem (item) {
+        if (item.loading) {
+            return '{{ trans('global.searching') }}...';
+        }
+        var markup = "<div class='searchable-link' href='" + item.url + "'>";
+        markup += "<div class='searchable-title'>" + item.model + "</div>";
+        $.each(item.fields, function(key, field) {
+            markup += "<div class='searchable-fields'>" + item.fields_formated[field] + " : " + item[field] + "</div>";
+        });
+        markup += "</div>";
+
+        return markup;
+    }
+
+    function formatItemSelection (item) {
+        if (!item.model) {
+            return '{{ trans('global.search') }}...';
+        }
+        return item.model;
+    }
+    $(document).delegate('.searchable-link', 'click', function() {
+        var url = $(this).attr('href');
+        window.location = url;
+    });
 });
 
     </script>
